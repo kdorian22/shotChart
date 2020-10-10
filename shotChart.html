@@ -1,0 +1,275 @@
+<style>
+  #charts{
+    width: 95%;
+    margin:auto
+  }
+  svg{
+    float:left;
+    border: 1px solid white;
+    background-color: rgb(219, 184, 143)
+  }
+
+  body{
+    background-color: lightblue
+  }
+</style>
+
+<div style = 'width: 98%'>
+  <div id = 'charts' style = 'margin:auto'>
+    <svg id = court width=800 height=752>
+    </svg>
+  </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script>
+  margin = {left: 0, right: 0, top: 0, bottom: 0}
+
+  svg = d3.select('#court')
+  width = svg.attr('width')
+  height = svg.attr('height')
+
+  var xScale = d3.scaleLinear().range([width, 0]).domain([25, -25])
+  var yScale = d3.scaleLinear().range([height, 0]).domain([0,47])
+
+  svg.append('rect')
+    .attr('id', 'paint')
+    .attr('x', xScale(-8))
+    .attr('y', yScale(19))
+    .attr('width', xScale(-9))
+    .attr('height', height-yScale(19))
+    .style('stroke','white')
+    .style('fill', '#1e4885')
+    .style('stroke-width', xScale(-24.83))
+
+    svg.append('path')
+      .attr('class', 'marks')
+      .attr('d',
+                 'M' + xScale(8) + ',' + yScale(7) + 'L' + xScale(8.75) + ',' + yScale(7) +
+                 'M' + xScale(8) + ',' + yScale(8) + 'L' + xScale(8.75) + ',' + yScale(8) +
+                 'M' + xScale(8) + ',' + yScale(11) + 'L' + xScale(8.75) + ',' + yScale(11) +
+                 'M' + xScale(8) + ',' + yScale(14) + 'L' + xScale(8.75) + ',' + yScale(14) +
+                 'M' + xScale(6) + ',' + yScale(11) + 'L' + xScale(6.75) + ',' + yScale(11) +
+                 'M' + xScale(6) + ',' + yScale(14) + 'L' + xScale(6.75) + ',' + yScale(14) +
+                 'M' + xScale(6) + ',' + yScale(17) + 'L' + xScale(6.75) + ',' + yScale(17)
+      )
+      .attr('transform', 'translate('+xScale(-24.92)+',0)')
+      .style('stroke', '#fa6c4e')
+      .style('fill', 'none')
+      .style('stroke-width', xScale(-24.83))
+
+      svg.append('path')
+        .attr('class', 'marks')
+        .attr('d',
+                   'M' + xScale(-8) + ',' + yScale(7) + 'L' + xScale(-8.75) + ',' + yScale(7) +
+                   'M' + xScale(-8) + ',' + yScale(8) + 'L' + xScale(-8.75) + ',' + yScale(8) +
+                   'M' + xScale(-8) + ',' + yScale(11) + 'L' + xScale(-8.75) + ',' + yScale(11) +
+                   'M' + xScale(-8) + ',' + yScale(14) + 'L' + xScale(-8.75) + ',' + yScale(14) +
+                   'M' + xScale(-6) + ',' + yScale(17) + 'L' + xScale(-6.75) + ',' + yScale(17) +
+                   'M' + xScale(-6) + ',' + yScale(11) + 'L' + xScale(-6.75) + ',' + yScale(11) +
+                   'M' + xScale(-6) + ',' + yScale(14) + 'L' + xScale(-6.75) + ',' + yScale(14)
+        )
+        .attr('transform', 'translate('+(-xScale(-24.92))+',0)')
+        .style('stroke', '#fa6c4e')
+        .style('fill', 'none')
+        .style('stroke-width', xScale(-24.83))
+
+    svg.append('path')
+      .attr('class', 'marks')
+      .attr('d',
+                 'M' + xScale(-11) + ',' + yScale(0) + 'L' + xScale(-11) + ',' + yScale(.5) +
+                 'M' + xScale(11) + ',' + yScale(0) + 'L' + xScale(11) + ',' + yScale(.5) +
+                 'M' + xScale(-5) + ',' + yScale(13) + 'L' + xScale(-4.5) + ',' + yScale(13) +
+                 'M' + xScale(5) + ',' + yScale(13) + 'L' + xScale(4.5) + ',' + yScale(13)
+      )
+      .attr('transform', 'translate('+(-xScale(-24.92))+',0)')
+      .style('stroke', 'white')
+      .style('fill', 'none')
+      .style('stroke-width', xScale(-24.83))
+
+  svg.append('rect')
+    .attr('class', 'block')
+    .attr('x', xScale(-7))
+    .attr('y', yScale(8.1))
+    .attr('width', xScale(-24))
+    .attr('height', height - yScale(1.1))
+    .style('fill', '#fa6c4e')
+    .style('stroke', 'none')
+
+  svg.append('rect')
+    .attr('class', 'block')
+    .attr('x', xScale(6))
+    .attr('y', yScale(8.1))
+    .attr('width', xScale(-24))
+    .attr('height', height - yScale(1.1))
+    .style('fill', '#fa6c4e')
+    .style('stroke', 'none')
+
+  svg.append('path')
+    .attr('id', 'key')
+    .attr('d', 'M ' + xScale(22) + ',' + yScale(0) + 'L' + xScale(22) + ',' + yScale(14) + 'M' +
+      xScale(-22) + ',' + yScale(0) + 'L' + xScale(-22) + ',' + yScale(14) +
+      'M ' + xScale(6) + ',' + yScale(0) + 'L' + xScale(6) + ',' + yScale(19) + 'L' + xScale(-6) + ',' + yScale(19) +
+      'L' + xScale(-6) + ',' + yScale(0) + 'L' + xScale(-6) + ',' + yScale(19))
+    .style('stroke', 'white')
+    .style('fill', 'none')
+    .style('stroke-width', xScale(-24.83))
+
+
+
+
+
+  threePt = d3.arc()
+  .innerRadius(xScale(-1.25))
+  .outerRadius(xScale(-1.25))
+  .startAngle(Math.PI/2-.378)
+  .endAngle(-(Math.PI/2-.378))
+
+  // threeArcC = d3.arc()
+  // .innerRadius(xScale(-5.25))
+  // .outerRadius(xScale(-5.25))
+  // .startAngle(Math.PI/2)
+  // .endAngle(-(Math.PI/2))
+
+  freeTop = d3.arc()
+  .innerRadius(xScale(-19))
+  .outerRadius(xScale(-19))
+  .startAngle(Math.PI/2)
+  .endAngle(-(Math.PI/2))
+
+  freeBot = d3.arc()
+  .innerRadius(xScale(-19))
+  .outerRadius(xScale(-19))
+  .startAngle(Math.PI/2)
+  .endAngle(3*(Math.PI/2))
+
+  restricted = d3.arc()
+  .innerRadius(xScale(-21))
+  .outerRadius(xScale(-21))
+  .startAngle(Math.PI/2)
+  .endAngle(-(Math.PI/2))
+
+  halfOuter = d3.arc()
+  .innerRadius(xScale(-19))
+  .outerRadius(xScale(-19))
+  .startAngle(Math.PI/2)
+  .endAngle(3*(Math.PI/2))
+
+  halfInner = d3.arc()
+  .innerRadius(xScale(-23))
+  .outerRadius(xScale(-23))
+  .startAngle(Math.PI/2)
+  .endAngle(3*(Math.PI/2))
+
+  console.log(threePt)
+  svg.append('path')
+    .attr('id', 'arc')
+    .attr('d', threePt)
+    .attr('transform', 'translate('+width/2+',' + yScale(5.25)+')')
+    .style('stroke', 'white')
+    .style('fill', 'none')
+    .style('stroke-width', xScale(-24.83))
+
+    // svg.append('path')
+    //   .attr('id', 'arc')
+    //   .attr('d', threeArcC)
+    //   .attr('transform', 'translate('+width/2+',' + yScale(5.25)+')')
+    //   .style('stroke', 'white')
+    //   .style('fill', 'none')
+    //   .style('stroke-width', xScale(-24.83))
+
+  svg.append('path')
+    .attr('id', 'freeTop')
+    .attr('d', freeTop)
+    .attr('transform', 'translate('+width/2+',' + yScale(19)+')')
+    .style('stroke', 'white')
+    .style('fill', 'none')
+    .style('stroke-width', xScale(-24.83))
+
+  svg.append('path')
+    .attr('id', 'freeBot')
+    .attr('d', freeBot)
+    .attr('transform', 'translate('+width/2+',' + yScale(19)+')')
+    .style('stroke', 'white')
+    .style('fill', 'none')
+    .style('stroke-width', xScale(-24.83))
+    .style('stroke-dasharray', 10)
+
+  svg.append('path')
+    .attr('id', 'restricted')
+    .attr('d', restricted)
+    .attr('transform', 'translate('+width/2+',' + yScale(4)+')')
+    .style('stroke', 'white')
+    .style('fill', 'none')
+    .style('stroke-width', xScale(-24.83))
+
+  svg.append('path')
+    .attr('id', 'halfOuter')
+    .attr('d', halfOuter)
+    .attr('transform', 'translate('+width/2+',' + 0 +')')
+    .style('stroke', 'white')
+    .style('fill', 'none')
+    .style('stroke-width', xScale(-24.83))
+
+  svg.append('path')
+    .attr('id', 'halfInner')
+    .attr('d', halfInner)
+    .attr('transform', 'translate('+width/2+',' + 0 +')')
+    .style('stroke', 'white')
+    .style('fill', 'none')
+    .style('stroke-width', xScale(-24.83))
+
+  svg.append('circle')
+    .attr('class', 'hoop')
+    .attr('cx', xScale(0))
+    .attr('cy', yScale(5.25))
+    .attr('r', height-yScale(.75))
+    .style('fill', 'none')
+    .style('stroke', 'darkred')
+    .style('stroke-width', 2)
+
+
+  svg.append('rect')
+    .attr('x', xScale(-3))
+    .attr('y', yScale(4))
+    .attr('width', xScale(-19))
+    .attr('height', height-yScale(.35))
+
+    svg.append('rect')
+      .attr('x', xScale(-3))
+      .attr('y', yScale(4))
+      .attr('width', xScale(-19))
+      .attr('height', height-yScale(.35))
+
+    function drawCircle(x, y){
+      svg.append('circle')
+      .attr('class', 'click-circle')
+      .attr('cx', x)
+      .attr('cy', y)
+      .attr('r', '2')
+      .style('fill', 'navy')
+    }
+
+    svg.on('click', function(){
+      svg.selectAll('.click-circle').remove()
+      svg.selectAll('text').remove()
+      var local = d3.mouse(this)
+      console.log(local)
+
+
+      drawCircle(local[0], local[1])
+      x1 = Math.round(xScale.invert(local[0])*100,3)/100
+      y1 = Math.round(yScale.invert(local[1])*100,3)/100
+      svg.append('text')
+        .attr('y', yScale(0))
+        .attr('x', xScale(0))
+        .style('text-anchor', 'middle')
+        .style('font-size', '16px')
+        .text('(' + Math.round(xScale.invert(local[0])*100)/100 + ', ' + y1 + ')');
+        $('#btn').show
+
+        })
+
+
+</script>
