@@ -67,6 +67,7 @@
     font-size: 15px;
     text-align: center;
     width: 405px;
+    table-layout: fixed
   }
 
   .shotTable tr{
@@ -113,6 +114,7 @@
     box-shadow: 0px 0px 8px black;
     /* display: inline-block */
   }
+
 </style>
 
 <div style = 'width: 98%'>
@@ -143,7 +145,7 @@
       </table>
   </div>
 
-  <div id = shotDiv>
+  <div hidden id = shotDiv>
     <table class = shotTable>
       <tr>
         <th> Date </th>
@@ -154,7 +156,6 @@
     </table>
     <div id = shotTabdiv>
     <table class = shotTable id = actShotTable>
-
     </table>
     </div>
 </div>
@@ -438,7 +439,7 @@
       .style('fill', 'navy')
     }
 
-  show = 0
+  tableData = []
   //https://www.tutorialspoint.com/jqueryui/jqueryui_autocomplete.htm
   d3.csv("/data/shotData.csv", function(row) { return row
     }).then(function(d){
@@ -451,9 +452,12 @@
             minLength:2,
             delay:500,
             select: function(event, ui){
+              show = 0
+
               $('#showShots').text('Show Shots')
               $('#showShots').show()
               $('#showShots').unbind()
+              $('#shotDiv').hide()
               $('#showShots').click(function(){
                 if($('#showShots').text() == 'Show Shots'){
                   $('#showShots').text('Hide Shots')
@@ -463,9 +467,9 @@
                   show = 0
                 }
               $('.shot').toggle()
-              console.log(show)
             })
               $('.fil').css('cursor', 'pointer')
+
                     filters = {
                       'quarter': [],
                       'make': [],
@@ -485,6 +489,7 @@
 
 
                     $('.fil').click(function(){
+                      $('#shotDiv').hide()
                       val = $(this).data('val')
                       if($(this).hasClass('q')){
                         if($(this).hasClass('qSelect')){
@@ -536,6 +541,8 @@
                         filteredData = filteredData.filter(function(d){ return filters.type.indexOf(d.shot_type) > -1})
                       }
 
+
+
                       plotShots(filteredData);
                     })
 
@@ -550,7 +557,6 @@
 
 
   function plotShots(data){
-    console.log(show)
     d3.selectAll('.shot').remove()
     d3.selectAll('.hex').remove()
     xScaleCourt = d3.scaleLinear().range([width, 0]).domain([-250,250])
@@ -582,9 +588,10 @@
     }
     colScale = d3.scaleLinear().domain([-.1,.3,.8]).range(['blue', 'white', 'red'])
 
+
     // https://observablehq.com/@d3/hexbin-area
-    console.log(hexbin.radius()*Math.SQRT2)
-    r = d3.scaleSqrt().domain([0,50])
+    console.log(d3.min([d3.max(hexagons.map(function(d){return d.length})),50]))
+    r = d3.scaleSqrt().domain([0,d3.min([d3.max(hexagons.map(function(d){return d.length})),50])])
     .range([0, hexbin.radius()*Math.SQRT2])
 
 
@@ -597,6 +604,7 @@
     .style('stroke', 'white')
     .style('opacity', '.85')
     .style('stroke-width', '.75')
+    .style('cursor', 'pointer')
     .on('mouseenter', function(d){
       $('#toolTip').css('left', d3.event.pageX+30)
       $('#toolTip').css('top', d3.event.pageY-50)
@@ -607,6 +615,30 @@
     .on('mouseout', function(d){
       $('#toolTip').hide()
       d3.select('#toopTip').html('')
+    })
+    .on('click', function(d){
+      $('tr.rows').remove()
+      $('#shotDiv').show()
+      tableData = playerData.filter(function(e){ return d.ids.indexOf(e.shot_key) > -1})
+      .sort(function(a,b){ return d3.ascending(new Date(String(a.game_date)), new Date(String(b.game_date)))
+          || d3.ascending(a.period, b.period);
+        })
+
+      d3.select('#actShotTable').selectAll('tr.rows')
+      .data(tableData, function(d){return d.shot_key}).enter().append('tr').attr('class','rows')
+
+      d3.selectAll('tr.rows').append('td')
+      .html(function(d){return d.game_date.replace('/', '-').replace('/', '-')})
+
+      d3.selectAll('tr.rows').append('td')
+      .html(function(d){return parseFloat(d.period) > 4 ? 'OT' : d.period})
+
+      d3.selectAll('tr.rows').append('td')
+      .html(function(d){return d.action_type.replace('shot', '').replace('Shot','').replace('Jump', 'Jumper').replace('Turnaround ', '')})
+
+      d3.selectAll('tr.rows').append('td')
+      .html(function(d){return d.shot_made_flag == '1' ? 'Good' : 'No Good'})
+
     })
 
 
@@ -632,6 +664,7 @@
       $('#toolTip').hide()
       d3.select('#toopTip').html('')
     })
+
 
 
 
