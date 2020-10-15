@@ -30,7 +30,7 @@
   }
 
   #select{
-    font-size: 30px;
+    font-size: 20px;
     font-family: Trebuchet MS;
     width: 400px
   }
@@ -133,7 +133,7 @@
 <div style = 'width: 98%'>
     <div id = name> </div>
     <div id = courtDiv>
-    <svg id = court width=670 height=670>
+    <svg id = court width=700 height=700>
     </svg>
     <p hidden id = note> Note: Hexagon size is a function of shot frequency. Hover/click for details. </p>
     </div>
@@ -141,7 +141,14 @@
     <div id = filters>
       <table id = filterTable>
         <tr>
-          <td colspan = 5> <input placeholder = 'Select Player...' id = select> </td>
+          <td colspan = 5>
+            <!-- <input placeholder = 'Select Player...' id = select>  -->
+            <select id = 'select'>
+            <optgroup>
+              <option> -- </option>
+            </optgroup>
+          </select>
+          </td>
         </tr>
         <tr>
           <td class = 'fil q' data-val='["1"]'> Q1 </td>
@@ -476,13 +483,16 @@
       // plotShots(d.filter(function(d){return d.name == 'LeBron James'}))
       console.log(d)
 
-      $(function() {
+      // $(function() {
           players = _.uniq(_.pluck(d, "name"));
-          $("#select").autocomplete({
-            source: players,
-            minLength:2,
-            select: function(event, ui){
-
+          for(player in players){
+            $('#select optgroup').append(`<option> ${players[player]} </option>`)
+          }
+          // $("#select").autocomplete({
+          //   source: players,
+          //   minLength:2,
+          //   select: function(event, ui){
+          $('#select').change(function(){
               $('#showShots').text('Show Shots')
               $('#showShots').show()
               $('#note').show()
@@ -509,16 +519,20 @@
                     $('.m').removeClass('mSelect')
                     $('.q').removeClass('qSelect')
                     $('.t').removeClass('tSelect')
-                    player = ui.item.label
+                    // player = ui.item.label
+                    player = $(this).val()
                     $("#select").val(player)
                     playerData = d.filter(function(d){ return d.name == player})
                     plotShots(playerData);
-                    $('#select').click(function(d){
-                        $("#select").val('')
-                    });
+                    // $('#select').click(function(d){
+                    //     $("#select").val('')
+                    // });
 
 
                     $('.fil').click(function(){
+                      if($('#select').val() != '--'){
+
+
                       $('#shotDiv').hide()
                       val = $(this).data('val')
                       if($(this).hasClass('q')){
@@ -574,11 +588,12 @@
 
 
                       plotShots(filteredData);
+                      }
                     })
 
-                    return false
-                 }
-        });
+                 //    return false
+
+        // });
       })
     });
 
