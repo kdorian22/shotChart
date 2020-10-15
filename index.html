@@ -7,7 +7,10 @@
   #charts{
     width: 95%;
     margin:auto;
+  }
 
+  #name{
+    font-size: 35px;
   }
 
   #courtDiv{
@@ -128,10 +131,11 @@
 </style>
 
 <div style = 'width: 98%'>
+    <div id = name> </div>
     <div id = courtDiv>
-    <svg id = court width=725 height=725>
+    <svg id = court width=670 height=670>
     </svg>
-    <p id = note> Note: Hexagon size is a function of shot frequency </p>
+    <p id = note> Note: Hexagon size is a function of shot frequency. Hover for details. </p>
     </div>
     <div id = cont>
     <div id = filters>
@@ -468,7 +472,8 @@
   d3.csv("./shotData.csv", function(row) { return row
     }).then(function(d){
       drawCourt()
-
+      show = 0
+      // plotShots(d.filter(function(d){return d.name == 'LeBron James'}))
       console.log(d)
 
       $(function() {
@@ -476,9 +481,7 @@
           $("#select").autocomplete({
             source: players,
             minLength:2,
-            delay:500,
             select: function(event, ui){
-              show = 0
 
               $('#showShots').text('Show Shots')
               $('#showShots').show()
@@ -583,6 +586,9 @@
 
 
   function plotShots(data){
+    if(data.length > 0){
+      $('#name').text(`${data[0].name} - ${data.length} Shots`)
+    }
     d3.selectAll('.legendLinear').empty()
     d3.selectAll('.legendLinear').style('display', 'block')
     d3.selectAll('.shot').remove()
