@@ -466,268 +466,268 @@
   tableData = []
   drawCourt()
   //https://www.tutorialspoint.com/jqueryui/jqueryui_autocomplete.htm
-  // d3.csv("/data/shotData.csv", function(row) { return row
-  //   }).then(function(d){
-  //     drawCourt()
-  //
-  //     $(function() {
-  //         players = _.uniq(_.pluck(d, "name"));
-  //         $("#select").autocomplete({
-  //           source: players,
-  //           minLength:2,
-  //           delay:500,
-  //           select: function(event, ui){
-  //             show = 0
-  //
-  //             $('#showShots').text('Show Shots')
-  //             $('#showShots').show()
-  //             $('#showShots').unbind()
-  //             $('#shotDiv').hide()
-  //             $('#showShots').click(function(){
-  //               if($('#showShots').text() == 'Show Shots'){
-  //                 $('#showShots').text('Hide Shots')
-  //                 show = 1
-  //               }else{
-  //                 $('#showShots').text('Show Shots')
-  //                 show = 0
-  //               }
-  //             $('.shot').toggle()
-  //           })
-  //             $('.fil').css('cursor', 'pointer')
-  //
-  //                   filters = {
-  //                     'quarter': [],
-  //                     'make': [],
-  //                     'type': []
-  //                   }
-  //                   $('.fil').unbind()
-  //                   $('.m').removeClass('mSelect')
-  //                   $('.q').removeClass('qSelect')
-  //                   $('.t').removeClass('tSelect')
-  //                   player = ui.item.label
-  //                   $("#select").val(player)
-  //                   playerData = d.filter(function(d){ return d.name == player})
-  //                   plotShots(playerData);
-  //                   $('#select').click(function(d){
-  //                       $("#select").val('')
-  //                   });
-  //
-  //
-  //                   $('.fil').click(function(){
-  //                     $('#shotDiv').hide()
-  //                     val = $(this).data('val')
-  //                     if($(this).hasClass('q')){
-  //                       if($(this).hasClass('qSelect')){
-  //                         $(this).removeClass('qSelect')
-  //                         for(el of val){
-  //                           filters.quarter.splice(filters.quarter.indexOf(el),1)
-  //                         }
-  //                       }else{
-  //                         $(this).addClass('qSelect')
-  //                         for(el of val){
-  //                           filters.quarter.push(el)
-  //                         }
-  //                       }
-  //                     }
-  //                       if($(this).hasClass('m')){
-  //                         if($(this).hasClass('mSelect')){
-  //                           $(this).removeClass('mSelect')
-  //                           for(el of val){
-  //                             filters.make.splice(filters.make.indexOf(el),1)
-  //                           }
-  //                         }else{
-  //                           $(this).addClass('mSelect')
-  //                           for(el of val){
-  //                             filters.make.push(el)
-  //                           }
-  //                         }
-  //                     }
-  //                     if($(this).hasClass('t')){
-  //                       if($(this).hasClass('tSelect')){
-  //                         $(this).removeClass('tSelect')
-  //                         for(el of val){
-  //                           filters.type.splice(filters.type.indexOf(el),1)
-  //                         }
-  //                       }else{
-  //                         $(this).addClass('tSelect')
-  //                         for(el of val){
-  //                           filters.type.push(el)
-  //                         }
-  //                       }
-  //                   }
-  //                     filteredData = playerData
-  //                     if(filters.quarter.length > 0 & filters.quarter.length < 6){
-  //                       filteredData = filteredData.filter(function(d){ return filters.quarter.indexOf(d.period) > -1})
-  //                     }
-  //                     if(filters.make.length > 0 & filters.make.length < 2){
-  //                       filteredData = filteredData.filter(function(d){ return filters.make.indexOf(d.shot_made_flag) > -1})
-  //                     }
-  //                     if(filters.type.length > 0 & filters.type.length < 2){
-  //                       filteredData = filteredData.filter(function(d){ return filters.type.indexOf(d.shot_type) > -1})
-  //                     }
-  //
-  //
-  //
-  //                     plotShots(filteredData);
-  //                   })
-  //
-  //                   return false
-  //                }
-  //       });
-  //     })
-  //   });
-  //
-  //
-  //
-  //
-  //
-  // function plotShots(data){
-  //   d3.selectAll('.legendLinear').empty()
-  //   d3.selectAll('.legendLinear').style('display', 'block')
-  //   d3.selectAll('.shot').remove()
-  //   d3.selectAll('.hex').remove()
-  //   xScaleCourt = d3.scaleLinear().range([width, 0]).domain([-250,250])
-  //   yScaleCourt = d3.scaleLinear().range([height, 0]).domain([-50,450])
-  //
-  //
-  //
-  //   hexbin = d3.hexbin()
-  //   .radius(40)
-  //   .extent([0,0], [width, height])
-  //
-  //   hexData = []
-  //
-  //   for(d of data){
-  //     hexData.push([xScaleCourt(d.x), yScaleCourt(d.y), d.shot_made_flag, d.shot_key])
-  //   }
-  //
-  //   hexagons = hexbin(hexData)
-  //   for(hex of hexagons){
-  //     ids = []
-  //     made = 0
-  //     for(shot of hex){
-  //       made += parseFloat(shot[2])
-  //       ids.push(shot[3])
-  //     }
-  //     hex.made = made
-  //     hex.perc = made/hex.length
-  //     hex.ids = ids
-  //   }
-  //
-  //
-  //
-  //
-  //   // https://observablehq.com/@d3/hexbin-area
-  //   console.log(d3.min([d3.max(hexagons.map(function(d){return d.length})),50]))
-  //   r = d3.scaleSqrt().domain([0,d3.min([d3.max(hexagons.map(function(d){return d.length})),50])])
-  //   .range([0, hexbin.radius()*Math.SQRT2])
-  //
-  //
-  //   svg.selectAll('.hex')
-  //   .data(hexagons)
-  //   .enter().append('path').attr('class', 'hex')
-  //   .attr('d', function(d){return hexbin.hexagon(r(d.length > 50 ? 50 : d.length))})
-  //   .attr('transform', function(d){ return `translate(${d.x}, ${d.y})`})
-  //   .style('fill', function(d){ return colScale(d.perc)})
-  //   .style('stroke', 'white')
-  //   .style('opacity', '.85')
-  //   .style('stroke-width', '.75')
-  //   .style('cursor', 'pointer')
-  //   .on('mouseenter', function(d){
-  //     $('#toolTip').css('left', d3.event.pageX+30)
-  //     $('#toolTip').css('top', d3.event.pageY-50)
-  //     d3.select('#toolTip').html(`${Math.round(d.perc*100)}% (${d.made}/${d.length})`)
-  //     $('#toolTip').show()
-  //
-  //   })
-  //   .on('mouseout', function(d){
-  //     $('#toolTip').hide()
-  //     d3.select('#toopTip').html('')
-  //   })
-  //   .on('click', function(d){
-  //     $('tr.rows').remove()
-  //     $('#shotDiv').show()
-  //     tableData = playerData.filter(function(e){ return d.ids.indexOf(e.shot_key) > -1})
-  //     .sort(function(a,b){ return d3.ascending(new Date(String(a.game_date)), new Date(String(b.game_date)))
-  //         || d3.ascending(a.period, b.period);
-  //       })
-  //
-  //     d3.select('#actShotTable').selectAll('tr.rows')
-  //     .data(tableData, function(d){return d.shot_key}).enter().append('tr').attr('class','rows')
-  //
-  //     d3.selectAll('tr.rows').append('td')
-  //     .html(function(d){return d.game_date.replace('/', '-').replace('/', '-')})
-  //     .style('width', '25%')
-  //
-  //     d3.selectAll('tr.rows').append('td')
-  //     .html(function(d){return parseFloat(d.period) > 4 ? 'OT' : d.period})
-  //     .style('width', '10%')
-  //
-  //     d3.selectAll('tr.rows').append('td')
-  //     .html(function(d){return d.action_type.replace('shot', '').replace('Shot','').replace('Jump', 'Jumper').replace('Turnaround ', '')})
-  //     .style('width', '45%')
-  //
-  //     d3.selectAll('tr.rows').append('td')
-  //     .html(function(d){return d.shot_made_flag == '1' ? 'Good' : 'No Good'})
-  //     .style('width', '20%')
-  //
-  //   })
-  //
-  //
-  //   svg.selectAll('.shot').data(data)
-  //   .enter().append('circle')
-  //   .attr('class', 'shot')
-  //   .attr('cx', function(d){ return xScaleCourt(d.x)})
-  //   .attr('cy', function(d){ return yScaleCourt(d.y)})
-  //   .attr('r', '6')
-  //   .style('fill', function(d){ return d.shot_made_flag == 1 ? 'green' : 'red'})
-  //   .style('stroke', 'black')
-  //   .style('cursor', 'pointer')
-  //   .style('display', show == 0 ? 'none' : 'inline')
-  //   .on('mouseenter', function(d){
-  //     $('#toolTip').css('left', d3.event.pageX+30)
-  //     $('#toolTip').css('top', d3.event.pageY-50)
-  //     d3.select('#toolTip').html(`${d.game_date.replace('/', '-').replace('/', '-')} vs ${d.opponent} <br>
-  //     <div style = 'margin-top: 10px'>${d.shot_distance}ft ${d.action_type.replace('shot', '').replace('Shot','').replace('Jump', 'Jumper').replace('Turnaround ', '')} (${d.shot_made_flag == 1 ? 'Good' : 'No Good'})</div>`)
-  //     $('#toolTip').show()
-  //
-  //   })
-  //   .on('mouseout', function(d){
-  //     $('#toolTip').hide()
-  //     d3.select('#toopTip').html('')
-  //   })
-  //
-  //   //https://d3-legend.susielu.com/#color-linear-custom
-  //   // svg.append("g")
-  //   //   .attr("class", "legendLinear")
-  //   //   .attr("transform", `translate(${width-80},25)`)
-  //   //   .style('display', 'none');
-  //
-  //
-  //
-  //   legendLinear = d3.legendColor()
-  //     .shapeWidth(30)
-  //     .cells([.15,.30,.50,.80])
-  //     .orient('vertical')
-  //     .scale(colScale)
-  //     .labelFormat(".0%")
-  //     .titleWidth(100);
-  //
-  //     d3.select(".legendLinear")
-  //     .append('text')
-  //     .attr("transform", `translate(-6,-9)`)
-  //     .text('Shooting %').style('text-decoration', 'underline')
-  //
-  //     d3.select(".legendLinear")
-  //     .call(legendLinear);
-  //
-  //
-  //
-  //
-  //
-  //
-  // }
-  //
+  d3.csv("/data/shotData.csv", function(row) { return row
+    }).then(function(d){
+      drawCourt()
+
+      $(function() {
+          players = _.uniq(_.pluck(d, "name"));
+          $("#select").autocomplete({
+            source: players,
+            minLength:2,
+            delay:500,
+            select: function(event, ui){
+              show = 0
+
+              $('#showShots').text('Show Shots')
+              $('#showShots').show()
+              $('#showShots').unbind()
+              $('#shotDiv').hide()
+              $('#showShots').click(function(){
+                if($('#showShots').text() == 'Show Shots'){
+                  $('#showShots').text('Hide Shots')
+                  show = 1
+                }else{
+                  $('#showShots').text('Show Shots')
+                  show = 0
+                }
+              $('.shot').toggle()
+            })
+              $('.fil').css('cursor', 'pointer')
+
+                    filters = {
+                      'quarter': [],
+                      'make': [],
+                      'type': []
+                    }
+                    $('.fil').unbind()
+                    $('.m').removeClass('mSelect')
+                    $('.q').removeClass('qSelect')
+                    $('.t').removeClass('tSelect')
+                    player = ui.item.label
+                    $("#select").val(player)
+                    playerData = d.filter(function(d){ return d.name == player})
+                    plotShots(playerData);
+                    $('#select').click(function(d){
+                        $("#select").val('')
+                    });
+
+
+                    $('.fil').click(function(){
+                      $('#shotDiv').hide()
+                      val = $(this).data('val')
+                      if($(this).hasClass('q')){
+                        if($(this).hasClass('qSelect')){
+                          $(this).removeClass('qSelect')
+                          for(el of val){
+                            filters.quarter.splice(filters.quarter.indexOf(el),1)
+                          }
+                        }else{
+                          $(this).addClass('qSelect')
+                          for(el of val){
+                            filters.quarter.push(el)
+                          }
+                        }
+                      }
+                        if($(this).hasClass('m')){
+                          if($(this).hasClass('mSelect')){
+                            $(this).removeClass('mSelect')
+                            for(el of val){
+                              filters.make.splice(filters.make.indexOf(el),1)
+                            }
+                          }else{
+                            $(this).addClass('mSelect')
+                            for(el of val){
+                              filters.make.push(el)
+                            }
+                          }
+                      }
+                      if($(this).hasClass('t')){
+                        if($(this).hasClass('tSelect')){
+                          $(this).removeClass('tSelect')
+                          for(el of val){
+                            filters.type.splice(filters.type.indexOf(el),1)
+                          }
+                        }else{
+                          $(this).addClass('tSelect')
+                          for(el of val){
+                            filters.type.push(el)
+                          }
+                        }
+                    }
+                      filteredData = playerData
+                      if(filters.quarter.length > 0 & filters.quarter.length < 6){
+                        filteredData = filteredData.filter(function(d){ return filters.quarter.indexOf(d.period) > -1})
+                      }
+                      if(filters.make.length > 0 & filters.make.length < 2){
+                        filteredData = filteredData.filter(function(d){ return filters.make.indexOf(d.shot_made_flag) > -1})
+                      }
+                      if(filters.type.length > 0 & filters.type.length < 2){
+                        filteredData = filteredData.filter(function(d){ return filters.type.indexOf(d.shot_type) > -1})
+                      }
+
+
+
+                      plotShots(filteredData);
+                    })
+
+                    return false
+                 }
+        });
+      })
+    });
+
+
+
+
+
+  function plotShots(data){
+    d3.selectAll('.legendLinear').empty()
+    d3.selectAll('.legendLinear').style('display', 'block')
+    d3.selectAll('.shot').remove()
+    d3.selectAll('.hex').remove()
+    xScaleCourt = d3.scaleLinear().range([width, 0]).domain([-250,250])
+    yScaleCourt = d3.scaleLinear().range([height, 0]).domain([-50,450])
+
+
+
+    hexbin = d3.hexbin()
+    .radius(40)
+    .extent([0,0], [width, height])
+
+    hexData = []
+
+    for(d of data){
+      hexData.push([xScaleCourt(d.x), yScaleCourt(d.y), d.shot_made_flag, d.shot_key])
+    }
+
+    hexagons = hexbin(hexData)
+    for(hex of hexagons){
+      ids = []
+      made = 0
+      for(shot of hex){
+        made += parseFloat(shot[2])
+        ids.push(shot[3])
+      }
+      hex.made = made
+      hex.perc = made/hex.length
+      hex.ids = ids
+    }
+
+
+
+
+    // https://observablehq.com/@d3/hexbin-area
+    console.log(d3.min([d3.max(hexagons.map(function(d){return d.length})),50]))
+    r = d3.scaleSqrt().domain([0,d3.min([d3.max(hexagons.map(function(d){return d.length})),50])])
+    .range([0, hexbin.radius()*Math.SQRT2])
+
+
+    svg.selectAll('.hex')
+    .data(hexagons)
+    .enter().append('path').attr('class', 'hex')
+    .attr('d', function(d){return hexbin.hexagon(r(d.length > 50 ? 50 : d.length))})
+    .attr('transform', function(d){ return `translate(${d.x}, ${d.y})`})
+    .style('fill', function(d){ return colScale(d.perc)})
+    .style('stroke', 'white')
+    .style('opacity', '.85')
+    .style('stroke-width', '.75')
+    .style('cursor', 'pointer')
+    .on('mouseenter', function(d){
+      $('#toolTip').css('left', d3.event.pageX+30)
+      $('#toolTip').css('top', d3.event.pageY-50)
+      d3.select('#toolTip').html(`${Math.round(d.perc*100)}% (${d.made}/${d.length})`)
+      $('#toolTip').show()
+
+    })
+    .on('mouseout', function(d){
+      $('#toolTip').hide()
+      d3.select('#toopTip').html('')
+    })
+    .on('click', function(d){
+      $('tr.rows').remove()
+      $('#shotDiv').show()
+      tableData = playerData.filter(function(e){ return d.ids.indexOf(e.shot_key) > -1})
+      .sort(function(a,b){ return d3.ascending(new Date(String(a.game_date)), new Date(String(b.game_date)))
+          || d3.ascending(a.period, b.period);
+        })
+
+      d3.select('#actShotTable').selectAll('tr.rows')
+      .data(tableData, function(d){return d.shot_key}).enter().append('tr').attr('class','rows')
+
+      d3.selectAll('tr.rows').append('td')
+      .html(function(d){return d.game_date.replace('/', '-').replace('/', '-')})
+      .style('width', '25%')
+
+      d3.selectAll('tr.rows').append('td')
+      .html(function(d){return parseFloat(d.period) > 4 ? 'OT' : d.period})
+      .style('width', '10%')
+
+      d3.selectAll('tr.rows').append('td')
+      .html(function(d){return d.action_type.replace('shot', '').replace('Shot','').replace('Jump', 'Jumper').replace('Turnaround ', '')})
+      .style('width', '45%')
+
+      d3.selectAll('tr.rows').append('td')
+      .html(function(d){return d.shot_made_flag == '1' ? 'Good' : 'No Good'})
+      .style('width', '20%')
+
+    })
+
+
+    svg.selectAll('.shot').data(data)
+    .enter().append('circle')
+    .attr('class', 'shot')
+    .attr('cx', function(d){ return xScaleCourt(d.x)})
+    .attr('cy', function(d){ return yScaleCourt(d.y)})
+    .attr('r', '6')
+    .style('fill', function(d){ return d.shot_made_flag == 1 ? 'green' : 'red'})
+    .style('stroke', 'black')
+    .style('cursor', 'pointer')
+    .style('display', show == 0 ? 'none' : 'inline')
+    .on('mouseenter', function(d){
+      $('#toolTip').css('left', d3.event.pageX+30)
+      $('#toolTip').css('top', d3.event.pageY-50)
+      d3.select('#toolTip').html(`${d.game_date.replace('/', '-').replace('/', '-')} vs ${d.opponent} <br>
+      <div style = 'margin-top: 10px'>${d.shot_distance}ft ${d.action_type.replace('shot', '').replace('Shot','').replace('Jump', 'Jumper').replace('Turnaround ', '')} (${d.shot_made_flag == 1 ? 'Good' : 'No Good'})</div>`)
+      $('#toolTip').show()
+
+    })
+    .on('mouseout', function(d){
+      $('#toolTip').hide()
+      d3.select('#toopTip').html('')
+    })
+
+    //https://d3-legend.susielu.com/#color-linear-custom
+    // svg.append("g")
+    //   .attr("class", "legendLinear")
+    //   .attr("transform", `translate(${width-80},25)`)
+    //   .style('display', 'none');
+
+
+
+    legendLinear = d3.legendColor()
+      .shapeWidth(30)
+      .cells([.15,.30,.50,.80])
+      .orient('vertical')
+      .scale(colScale)
+      .labelFormat(".0%")
+      .titleWidth(100);
+
+      d3.select(".legendLinear")
+      .append('text')
+      .attr("transform", `translate(-6,-9)`)
+      .text('Shooting %').style('text-decoration', 'underline')
+
+      d3.select(".legendLinear")
+      .call(legendLinear);
+
+
+
+
+
+
+  }
+
 
 
 
