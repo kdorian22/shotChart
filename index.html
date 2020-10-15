@@ -135,7 +135,7 @@
     <div id = courtDiv>
     <svg id = court width=670 height=670>
     </svg>
-    <p id = note> Note: Hexagon size is a function of shot frequency. Hover for details. </p>
+    <p hidden id = note> Note: Hexagon size is a function of shot frequency. Hover/click for details. </p>
     </div>
     <div id = cont>
     <div id = filters>
@@ -485,6 +485,7 @@
 
               $('#showShots').text('Show Shots')
               $('#showShots').show()
+              $('#note').show()
               $('#showShots').unbind()
               $('#shotDiv').hide()
               $('#showShots').click(function(){
@@ -586,7 +587,7 @@
 
 
   function plotShots(data){
-    if(data.length > 0){
+    if(data.length > 0 & 1 == 0){
       $('#name').text(`${data[0].name} - ${data.length} Shots`)
     }
     d3.selectAll('.legendLinear').empty()
