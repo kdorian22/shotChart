@@ -469,6 +469,7 @@
   d3.csv("/data/shotData.csv", function(row) { return row
     }).then(function(d){
       drawCourt()
+      console.log(d)
 
       $(function() {
           players = _.uniq(_.pluck(d, "name"));
