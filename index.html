@@ -4,6 +4,7 @@
   body{
     font-family: Trebuchet MS
   }
+
   #charts{
     width: 95%;
     margin:auto;
@@ -18,11 +19,13 @@
     margin-right: 20px;
     margin-bottom: 20px
   }
+
   svg{
     border: 2px solid white;
     background-color: rgb(219, 184, 143);
     box-shadow: 0px 0px 10px gray;
   }
+
   #note{
     color: black;
     font-style: italic;
@@ -71,6 +74,7 @@
   #filterTable{
     border-collapse: separate
   }
+
   #cont{
     /* clear: both; */
     float: left;
@@ -476,7 +480,7 @@
   tableData = []
   // drawCourt()
   //https://www.tutorialspoint.com/jqueryui/jqueryui_autocomplete.htm
-  d3.csv("./shotData.csv", function(row) { return row
+  d3.csv("./shots.csv", function(row) { return row
     }).then(function(d){
       drawCourt()
       show = 0
