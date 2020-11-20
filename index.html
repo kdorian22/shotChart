@@ -76,7 +76,6 @@
   }
 
   #cont{
-    /* clear: both; */
     float: left;
   }
   .shotTable{
@@ -129,11 +128,9 @@
     padding: 8px;
     border-radius: 5px;
     box-shadow: 0px 0px 8px black;
-    /* display: inline-block */
   }
 
   #bbox{
-    /* fill: rgb(219, 184, 143); */
     fill: white;
     box-shadow: 0px 0px 8px black;
 
@@ -153,7 +150,6 @@
       <table id = filterTable>
         <tr>
           <td colspan = 5>
-            <!-- <input placeholder = 'Select Player...' id = select>  -->
             <select id = 'select'>
             <optgroup>
               <option> -- </option>
@@ -201,10 +197,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://d3js.org/d3.v5.min.js"></script>
-<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.11.0/underscore-min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.js"></script>
 <script src="https://d3js.org/d3-hexbin.v0.2.min.js"></script>
 
 <script>
@@ -359,13 +352,6 @@
       .style('fill', 'none')
       .style('stroke-width', xScale(-24.83))
 
-      // svg.append('path')
-      //   .attr('id', 'arc')
-      //   .attr('d', threeArcC)
-      //   .attr('transform', 'translate('+width/2+',' + yScale(5.25)+')')
-      //   .style('stroke', 'white')
-      //   .style('fill', 'none')
-      //   .style('stroke-width', xScale(-24.83))
 
     svg.append('path')
       .attr('id', 'freeTop')
@@ -485,24 +471,16 @@
     }
 
   tableData = []
-  // drawCourt()
-  //https://www.tutorialspoint.com/jqueryui/jqueryui_autocomplete.htm
+
   d3.csv("./shots.csv", function(row) { return row
     }).then(function(d){
       drawCourt()
       show = 0
-      // plotShots(d.filter(function(d){return d.name == 'LeBron James'}))
-      console.log(d)
 
-      // $(function() {
           players = _.uniq(_.pluck(d, "name"));
           for(player in players){
             $('#select optgroup').append(`<option> ${players[player]} </option>`)
           }
-          // $("#select").autocomplete({
-          //   source: players,
-          //   minLength:2,
-          //   select: function(event, ui){
           $('#select').change(function(){
               $('#showShots').text('Show Shots')
               $('#showShots').show()
@@ -530,14 +508,10 @@
                     $('.m').removeClass('mSelect')
                     $('.q').removeClass('qSelect')
                     $('.t').removeClass('tSelect')
-                    // player = ui.item.label
                     player = $(this).val()
                     $("#select").val(player)
                     playerData = d.filter(function(d){ return d.name == player})
                     plotShots(playerData);
-                    // $('#select').click(function(d){
-                    //     $("#select").val('')
-                    // });
 
 
                     $('.fil').click(function(){
@@ -601,10 +575,6 @@
                       plotShots(filteredData);
                       }
                     })
-
-                 //    return false
-
-        // });
       })
     });
 
@@ -653,21 +623,14 @@
 
 
 
-    // https://observablehq.com/@d3/hexbin-area
     r = d3.scaleSqrt().domain([0, d3.max(hexagons.map(function(d){return d.length}))])
     .range([10, hexbin.radius()*Math.SQRT2])
-
-
-
-    // r = d3.scaleSqrt().domain([-5,d3.min([d3.max(hexagons.map(function(d){return d.length})),60])])
-    // .range([0, hexbin.radius()*Math.SQRT2])
 
 
     svg.selectAll('.hex')
     .data(hexagons)
     .enter().append('path').attr('class', 'hex')
-    .attr('d', function(d){return hexbin.hexagon(r(d3.min([d.length,80])))})
-    // .attr('d', function(d){return hexbin.hexagon(r(d.length > 60 ? 60 : d.length))})
+    .attr('d', function(d){return hexbin.hexagon(r(d3.min([d.length, d.length])))})
     .attr('transform', function(d){ return `translate(${d.x}, ${d.y})`})
     .style('fill', function(d){ return colScale(d.perc)})
     .style('stroke', 'white')
@@ -738,22 +701,6 @@
       d3.select('#toopTip').html('')
     })
 
-
-    // legendLinear = d3.legendColor()
-    //   .shapeWidth(30)
-    //   .cells([.15,.30,.50,.80])
-    //   .orient('vertical')
-    //   .scale(colScale)
-    //   .labelFormat(".0%")
-    //   .titleWidth(100);
-    //
-    //   d3.select(".legendLinear")
-    //   .append('text')
-    //   .attr("transform", `translate(-6,-9)`)
-    //   .text('Shooting %').style('text-decoration', 'underline')
-    //
-    //   d3.select(".legendLinear")
-    //   .call(legendLinear)
 
       var legendHexagons = [
       [width-80,20,.15,5],
