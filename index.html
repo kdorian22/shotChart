@@ -132,6 +132,13 @@
     /* display: inline-block */
   }
 
+  #bbox{
+    /* fill: rgb(219, 184, 143); */
+    fill: white;
+    box-shadow: 0px 0px 8px black;
+
+  }
+
 </style>
 
 <div style = 'width: 98%'>
@@ -139,7 +146,7 @@
     <div id = courtDiv>
     <svg id = court width=700 height=700>
     </svg>
-    <p hidden id = note> Note: Hexagon size is a function of shot frequency. Hover/click for details. </p>
+    <p hidden id = note> Hover/click hexagons for details. </p>
     </div>
     <div id = cont>
     <div id = filters>
@@ -442,7 +449,7 @@
         svg.append("g")
           .attr("class", "legendLinear")
           .attr("transform", `translate(${width-80},25)`)
-          .style('display', 'none');
+          .style('display', 'none')
 
 
 
@@ -619,7 +626,7 @@
 
 
     hexbin = d3.hexbin()
-    .radius(40)
+    .radius(30)
     .extent([0,0], [width, height])
 
     hexData = []
@@ -627,6 +634,7 @@
     for(d of data){
       hexData.push([xScaleCourt(d.x), yScaleCourt(d.y), d.shot_made_flag, d.shot_key])
     }
+
 
     hexagons = hexbin(hexData)
     for(hex of hexagons){
@@ -644,16 +652,22 @@
 
 
 
+
     // https://observablehq.com/@d3/hexbin-area
-    console.log(d3.min([d3.max(hexagons.map(function(d){return d.length})),50]))
-    r = d3.scaleSqrt().domain([0,d3.min([d3.max(hexagons.map(function(d){return d.length})),50])])
-    .range([0, hexbin.radius()*Math.SQRT2])
+    r = d3.scaleSqrt().domain([0, d3.max(hexagons.map(function(d){return d.length}))])
+    .range([10, hexbin.radius()*Math.SQRT2])
+
+
+
+    // r = d3.scaleSqrt().domain([-5,d3.min([d3.max(hexagons.map(function(d){return d.length})),60])])
+    // .range([0, hexbin.radius()*Math.SQRT2])
 
 
     svg.selectAll('.hex')
     .data(hexagons)
     .enter().append('path').attr('class', 'hex')
-    .attr('d', function(d){return hexbin.hexagon(r(d.length > 50 ? 50 : d.length))})
+    .attr('d', function(d){return hexbin.hexagon(r(d3.min([d.length,80])))})
+    // .attr('d', function(d){return hexbin.hexagon(r(d.length > 60 ? 60 : d.length))})
     .attr('transform', function(d){ return `translate(${d.x}, ${d.y})`})
     .style('fill', function(d){ return colScale(d.perc)})
     .style('stroke', 'white')
@@ -724,29 +738,110 @@
       d3.select('#toopTip').html('')
     })
 
-    //https://d3-legend.susielu.com/#color-linear-custom
-    // svg.append("g")
-    //   .attr("class", "legendLinear")
-    //   .attr("transform", `translate(${width-80},25)`)
-    //   .style('display', 'none');
+
+    // legendLinear = d3.legendColor()
+    //   .shapeWidth(30)
+    //   .cells([.15,.30,.50,.80])
+    //   .orient('vertical')
+    //   .scale(colScale)
+    //   .labelFormat(".0%")
+    //   .titleWidth(100);
+    //
+    //   d3.select(".legendLinear")
+    //   .append('text')
+    //   .attr("transform", `translate(-6,-9)`)
+    //   .text('Shooting %').style('text-decoration', 'underline')
+    //
+    //   d3.select(".legendLinear")
+    //   .call(legendLinear)
+
+      var legendHexagons = [
+      [width-80,20,.15,5],
+      [width-80,40,.3,10],
+      [width-80,70,.8,15],
+      ]
+
+      var legend = svg.append('g')
+      legend.selectAll('.hexLegend')
+      .data(legendHexagons)
+      .enter().append('path').attr('class', 'hexLegend')
+      .attr('d', function(d){return hexbin.hexagon((d[3]))})
+      .attr('transform', function(d){ return `translate(${d[0]}, ${d[1]})`})
+      .style('fill', function(d){ return colScale(d[2])})
+      .style('stroke', 'black')
+
+      legend.append('text').text('High Freq.')
+      .attr('x', width-60)
+      .attr('y', 67)
+      .style('font-size', '10px')
+      .style('text-anchor','start')
+
+      legend.append('text').text('Efficient')
+      .attr('x', width-60)
+      .attr('y', 80)
+      .style('font-size', '10px')
+      .style('text-anchor','start')
+
+      legend.append('text').text('Low Freq.')
+      .attr('x', width-60)
+      .attr('y', 20)
+      .style('font-size', '10px')
+      .style('text-anchor','start')
+
+      legend.append('text').text('Inefficient')
+      .attr('x', width-60)
+      .attr('y', 33)
+      .style('font-size', '10px')
+      .style('text-anchor','start')
+
+      var bbox = legend.node().getBBox();
+
+      var box = svg.append("rect")
+          .attr("x", bbox.x-5)
+          .attr("y", bbox.y-5)
+          .attr('id', 'bbox')
+          .attr("width", bbox.width+10)
+          .attr("height", bbox.height+10)
+          .style("stroke", "black")
+          .style("stroke-width", "1.5px")
+
+          var legend = svg.append('g')
+          legend.selectAll('.hexLegend')
+          .data(legendHexagons)
+          .enter().append('path').attr('class', 'hexLegend')
+          .attr('d', function(d){return hexbin.hexagon((d[3]))})
+          .attr('transform', function(d){ return `translate(${d[0]}, ${d[1]})`})
+          .style('fill', function(d){ return colScale(d[2])})
+          .style('stroke', 'black')
+
+          legend.append('text').text('High Freq.')
+          .attr('x', width-60)
+          .attr('y', 70)
+          .style('font-size', '10px')
+          .style('text-anchor','start')
+
+          legend.append('text').text('Efficient')
+          .attr('x', width-60)
+          .attr('y', 83)
+          .style('font-size', '10px')
+          .style('text-anchor','start')
+
+          legend.append('text').text('Low Freq.')
+          .attr('x', width-60)
+          .attr('y', 18)
+          .style('font-size', '10px')
+          .style('text-anchor','start')
+
+          legend.append('text').text('Inefficient')
+          .attr('x', width-60)
+          .attr('y', 31)
+          .style('font-size', '10px')
+          .style('text-anchor','start')
 
 
 
-    legendLinear = d3.legendColor()
-      .shapeWidth(30)
-      .cells([.15,.30,.50,.80])
-      .orient('vertical')
-      .scale(colScale)
-      .labelFormat(".0%")
-      .titleWidth(100);
 
-      d3.select(".legendLinear")
-      .append('text')
-      .attr("transform", `translate(-6,-9)`)
-      .text('Shooting %').style('text-decoration', 'underline')
 
-      d3.select(".legendLinear")
-      .call(legendLinear);
 
 
 
